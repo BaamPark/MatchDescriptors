@@ -81,10 +81,19 @@ matches = sorted(matches, key = lambda x:x.distance)
 
 img3 = cv2.drawMatches(img_1, kp1, img_2, kp2, matches[:10], img2, flags=2)
 
-src_pts = np.float32([ kp1[m.queryIdx].pt for m in matches ]).reshape(-1,1,2)
-print(src_pts.shape)
-print(src_pts)
+src_pts = np.float32([ kp1[m.queryIdx].pt for m in matches]).reshape(-1,1,2)
+dst_pts = np.float32([ kp2[m.trainIdx].pt for m in matches]).reshape(-1,1,2)
 
-# cv2.imshow("window", img3)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows
+
+src_pts = np.array([src_pts[4], src_pts[6], src_pts[9], src_pts[12]]).reshape(-1,1,2)
+dst_pts = np.array([dst_pts[4], dst_pts[6], dst_pts[9], dst_pts[12]]).reshape(-1,1,2)
+
+H, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
+result = cv2.warpPerspective(img_2, H, (img_1.shape[1] + img_2.shape[1], img_1.shape[0]))
+result[0:img_1.shape[0], 0:img_1.shape[1]] = img_1
+
+print(H)
+
+cv2.imshow("window", result)
+cv2.waitKey(0)
+cv2.destroyAllWindows
