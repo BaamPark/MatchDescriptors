@@ -28,7 +28,7 @@ img_2 = cv2.drawKeypoints(gray2, kp2, img2)
 #caculate euclidean distance of each descriptor in image1 with respect to each descriptor in image2
 #select the least distance that represent correspondence of descriptors
 
-
+"""
 distance_min_list = []
 for i in range(len(des1)):
     distance_list = []
@@ -65,9 +65,9 @@ for p in kp1_list:
 
 for p in kp2_list:
     cv2.circle(img2, (int(p[0]), int(p[1])), radius=20, color=(0, 255, 0), thickness=2)
-
 """
-my algorithm totall same as below
+
+
 bf = cv2.BFMatcher(cv2.NORM_L2) #Brute-Force
 matches = bf.match(des1, des2)
 matches = sorted(matches, key = lambda x:x.distance)
@@ -76,9 +76,8 @@ for m in matches:
     print("distnace: ", m.distance)
     print("des1: ", m.queryIdx)
     print("des2: ", m.trainIdx)
-"""
 
-cv2.imshow("window", img1)
-cv2.imshow("window2", img2)
+img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:10], img2, flags=2)
+cv2.imshow("window", img3)
 cv2.waitKey(0)
 cv2.destroyAllWindows
