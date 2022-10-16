@@ -40,13 +40,15 @@ for i in range(len(des1)):
         if distance_list[k] < min_val:
             min_val = distance_list[k]
             min_index = k
-    matchpt = MatchPoint(min_val, i, min_index)
+    matchpt = [min_val, i, min_index] #[distance, des1 index, des2 index]
     distance_min_list.append(matchpt)
 
-distance_min_list = sorted(distance_min_list, key = lambda a:a.distance)
+distance_min_list = sorted(distance_min_list, key = lambda a:a[0])
 
 for m in distance_min_list:
-    print(m.distance)
+    print("distance: ", m[0])
+    print("des1 index: ", m[1])
+    print("des2 index: ", m[2])
 
 # bf = cv2.BFMatcher(cv2.NORM_L2) #Brute-Force
 # matches = bf.match(des1, des2)
