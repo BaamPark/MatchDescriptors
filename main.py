@@ -14,18 +14,19 @@ gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 #keypoints
 sift1 = cv2.SIFT_create()
 kp1, des1 = sift1.detectAndCompute(gray1,None) #kp: list of key points, des:numpy array of shape num_keypointsx128
-print(len(kp1))
-print(des1.shape)
+print("length of kp1: ",len(kp1))
+print("shape of des1: ", des1.shape)
 
 sift2 = cv2.SIFT_create()
 kp2, des2 = sift2.detectAndCompute(gray2, None)
-print(len(kp2))
-print(des2.shape)
+print("length of kp2: ", len(kp2))
+print("shape of des2: ", des2.shape)
 
 img_1 = cv2.drawKeypoints(gray1,kp1,img1)
 img_2 = cv2.drawKeypoints(gray2, kp2, img2)
 
-
+#caculate euclidean distance of each descriptor in image1 with respect to each descriptor in image2
+#select the least distance that represent correspondence of descriptors
 distance_min_list = []
 index_des2 = []
 for i in range(len(des1)):
@@ -41,31 +42,17 @@ for i in range(len(des1)):
             min_index = k
     matchpt = MatchPoint(min_val, i, min_index)
     distance_min_list.append(matchpt)
-    # distance_min_list.append(min_val)    #distance_min_list.append(min(distance_list))
-    # index_des2.append(min_index)
 
-# distance_min_list.sort()
-print(distance_min_list[0].distance)
 distance_min_list = sorted(distance_min_list, key = lambda a:a.distance)
 
 for m in distance_min_list:
     print(m.distance)
-# print(len(distance_min_list))
-# print("index 2 is ", len(index_des2))
 
-# print("distnace is ", dist_l2)
-
-bf = cv2.BFMatcher(cv2.NORM_L2) #Brute-Force
-matches = bf.match(des1, des2)
-
-matches = sorted(matches, key = lambda x:x.distance)
-print("len of match is ",len(matches))
-for m in matches:
-    print("distance is ", m.distance) #the smaller is the distance, the better is the match
-    print("des1 index is ", m.trainIdx) #des2
-    print("des2 index is ", m.queryIdx) #des1
-
-img3 = cv2.drawMatches(gray1, kp1, gray2, kp2, matches[:10], None)
+# bf = cv2.BFMatcher(cv2.NORM_L2) #Brute-Force
+# matches = bf.match(des1, des2)
+# matches = sorted(matches, key = lambda x:x.distance)
+#
+# img3 = cv2.drawMatches(gray1, kp1, gray2, kp2, matches[:10], None)
 #
 # cv2.imshow("Maching result", img3)
 #
