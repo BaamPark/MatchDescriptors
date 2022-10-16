@@ -46,7 +46,9 @@ for i in range(len(des1)):
 distance_min_list = sorted(distance_min_list, key = lambda a:a.distance)
 
 for m in distance_min_list:
-    print(m.distance)
+    print("distance: ", m.distance)
+    print("des1 index: ", m.des1_idx)
+    print("des2 index: ", m.des2_idx)
 
 # bf = cv2.BFMatcher(cv2.NORM_L2) #Brute-Force
 # matches = bf.match(des1, des2)
