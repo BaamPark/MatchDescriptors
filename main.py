@@ -63,32 +63,33 @@ for i in range(15):
     kp1_list.append(kp1_coordinate[distance_min_list[i][1]])
     kp2_list.append(kp2_coordinate[distance_min_list[i][2]])
 
+"""
 b = 0
 for p in kp1_list:
-    cv2.circle(img1, (int(p[0]), int(p[1])), radius=3, color=(0, 255, 0), thickness=-1)
+    cv2.circle(img_1, (int(p[0]), int(p[1])), radius=3, color=(0, 255, 0), thickness=-1)
     b += 1
-    cv2.putText(img1, str(b), (int(p[0]), int(p[1])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1, cv2.LINE_AA)
+    cv2.putText(img_1, str(b), (int(p[0]), int(p[1])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1, cv2.LINE_AA)
 
 c = 0
 for p in kp2_list:
-    cv2.circle(img2, (int(p[0]), int(p[1])), radius=3, color=(0, 255, 0), thickness=-1)
+    cv2.circle(img_2, (int(p[0]), int(p[1])), radius=3, color=(0, 255, 0), thickness=-1)
     c += 1
-    cv2.putText(img2, str(c), (int(p[0]), int(p[1])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1, cv2.LINE_AA)
+    cv2.putText(img_2, str(c), (int(p[0]), int(p[1])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1, cv2.LINE_AA)
+"""
 
-#find four match
-kp1_nparr = np.float32([i for i in kp1_list]).reshape(-1,1,2)
-kp2_nparr = np.float32([i for i in kp2_list]).reshape(-1,1,2)
+#find four match 4, 6, 9, 12
+kp1_nparr = np.array([kp1_list[4], kp1_list[6], kp1_list[9], kp1_list[12]]).reshape(-1,1,2)
+kp2_nparr = np.array([kp2_list[4], kp2_list[6], kp2_list[9], kp2_list[12]]).reshape(-1,1,2)
 
 H, mask = cv2.findHomography(kp1_nparr, kp2_nparr, cv2.RANSAC, 5.0)
-
+#
 result = cv2.warpPerspective(img_2, H, (img_1.shape[1] + img_2.shape[1], img_1.shape[0]))
 result[0:img_1.shape[0], 0:img_1.shape[1]] = img_1
 
-print(len(kp1_list))
-print(kp1_nparr.shape)
-print(kp1_nparr)
+# print(len(kp1_list))
+# print(kp1_nparr.shape)
+# print(kp1_nparr)
 
 cv2.imshow("window", result)
-# cv2.imshow("window2", img_2)
 cv2.waitKey(0)
 cv2.destroyAllWindows
