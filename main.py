@@ -6,9 +6,11 @@ from MatchPoint import MatchPoint
 
 #reading image
 img1 = cv2.imread('img1.jpg')
+img_1 = cv2.imread('img1.jpg')
 gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
 
 img2 = cv2.imread('img2.jpg')
+img_2 = cv2.imread('img2.jpg')
 gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
 #keypoints
@@ -22,8 +24,8 @@ kp2, des2 = sift2.detectAndCompute(gray2, None)
 print("length of kp2: ", len(kp2))
 print("shape of des2: ", des2.shape)
 
-img_1 = cv2.drawKeypoints(gray1,kp1,img1)
-img_2 = cv2.drawKeypoints(gray2, kp2, img2)
+cv2.drawKeypoints(gray1,kp1,img1)
+cv2.drawKeypoints(gray2, kp2, img2)
 
 #caculate euclidean distance of each descriptor in image1 with respect to each descriptor in image2
 #select the least distance that represent correspondence of descriptors
@@ -77,7 +79,7 @@ for m in matches:
     print("des1: ", m.queryIdx)
     print("des2: ", m.trainIdx)
 
-img3 = cv2.drawMatches(img1, kp1, img2, kp2, matches[:10], img2, flags=2)
+img3 = cv2.drawMatches(img_1, kp1, img_2, kp2, matches[:10], img2, flags=2)
 cv2.imshow("window", img3)
 cv2.waitKey(0)
 cv2.destroyAllWindows
