@@ -49,17 +49,17 @@ for i in range(len(des1)):
 
 distance_min_list = sorted(distance_min_list, key = lambda a:a[0])
 
-for m in distance_min_list:
-    print("distance: ", m[0])
-    print("des1 index: ", m[1])
-    print("des2 index: ", m[2])
+# for m in distance_min_list:
+#     print("distance: ", m[0])
+#     print("des1 index: ", m[1])
+#     print("des2 index: ", m[2])
 
 kp1_coordinate = [p.pt for p in kp1]
 kp2_coordinate = [p.pt for p in kp2]
 
 kp1_list = []
 kp2_list = []
-for i in range(10):
+for i in range(15):
     kp1_list.append(kp1_coordinate[distance_min_list[i][1]])
     kp2_list.append(kp2_coordinate[distance_min_list[i][2]])
 
@@ -76,8 +76,19 @@ for p in kp2_list:
     cv2.putText(img2, str(c), (int(p[0]), int(p[1])), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1, cv2.LINE_AA)
 
 #find four match
+kp1_nparr = np.float32([i for i in kp1_list]).reshape(-1,1,2)
+kp2_nparr = np.float32([i for i in kp2_list]).reshape(-1,1,2)
 
-cv2.imshow("window", img_1)
-cv2.imshow("window2", img_2)
+H, mask = cv2.findHomography(kp1_nparr, kp2_nparr, cv2.RANSAC, 5.0)
+
+result = cv2.warpPerspective(img_2, H, (img_1.shape[1] + img_2.shape[1], img_1.shape[0]))
+result[0:img_1.shape[0], 0:img_1.shape[1]] = img_1
+
+print(len(kp1_list))
+print(kp1_nparr.shape)
+print(kp1_nparr)
+
+cv2.imshow("window", result)
+# cv2.imshow("window2", img_2)
 cv2.waitKey(0)
 cv2.destroyAllWindows
