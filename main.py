@@ -74,12 +74,17 @@ bf = cv2.BFMatcher(cv2.NORM_L2) #Brute-Force
 matches = bf.match(des1, des2)
 matches = sorted(matches, key = lambda x:x.distance)
 
-for m in matches:
-    print("distnace: ", m.distance)
-    print("des1: ", m.queryIdx)
-    print("des2: ", m.trainIdx)
+# for m in matches:
+#     print("distnace: ", m.distance)
+#     print("des1: ", m.queryIdx)
+#     print("des2: ", m.trainIdx)
 
 img3 = cv2.drawMatches(img_1, kp1, img_2, kp2, matches[:10], img2, flags=2)
-cv2.imshow("window", img3)
-cv2.waitKey(0)
-cv2.destroyAllWindows
+
+src_pts = np.float32([ kp1[m.queryIdx].pt for m in matches ]).reshape(-1,1,2)
+print(src_pts.shape)
+print(src_pts)
+
+# cv2.imshow("window", img3)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows
