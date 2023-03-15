@@ -50,6 +50,9 @@ for m in distance_min_list:
     print("des1 index: ", m.des1_idx)
     print("des2 index: ", m.des2_idx)
 
+H = ransac(kp1_list, kp2_list, 0.5)
+print(H)
+    
 # bf = cv2.BFMatcher(cv2.NORM_L2) #Brute-Force
 # matches = bf.match(des1, des2)
 # matches = sorted(matches, key = lambda x:x.distance)
