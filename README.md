@@ -19,3 +19,13 @@ This function takes in a correspondence pair (`correspondence`) and a homography
 
 ### `calculateHomography(correspondences)`
 This function takes in a list of correspondence pairs (`correspondences`) and calculates the homography matrix using SVD decomposition. It then returns the homography matrix.
+
+### Implementation Details:
+1. randomly select 4 keypoints pairs 
+2. calculate homography using 4 matched points
+3. count inliers for calculated homography within threshold
+4. repeat above processes 1,00 timesuntil it finds the most inliers  
+5. return homography where it has the most inliers
+
+
+
